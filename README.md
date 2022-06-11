@@ -1,6 +1,8 @@
 # Fiber2Cloth
 A simple library that converts Fiber’s Config Node to Cloth Config Screen in 1 line.
 
+This is an updated fork of [the original](https://github.com/shedaniel/FiberToCloth).
+
 Requires Cloth Config 2 v0.5.2 or above
 
 **NOTE: This is still an experimental library, and there aren’t a lot of features. I will be using this library on my own mods and I will see how this goes.**
@@ -10,9 +12,18 @@ Fiber2Cloth and ClothConfig is unlicensed, no crediting is required.
 Fiber is licensed under [Apache License 2.0](https://github.com/DaemonicLabs/fiber/blob/master/LICENSE). Make sure that you properly comply with their license.
 
 ### Maven
-Latest Version of Fiber2Cloth: ![image](https://api.bintray.com/packages/shedaniel/fiber2cloth/fiber2cloth/images/download.svg)
 
-Latest Version of ClothConfig 2: ![image](https://api.bintray.com/packages/shedaniel/cloth-config-2/config-2/images/download.svg)
+**Updated to 1.19 and hosted by itsmeowdev**
+
+Maven: [https://maven.itsmeow.dev/](https://maven.itsmeow.dev/)
+
+```groovy
+repositories {
+    maven {
+        url = "https://maven.itsmeow.dev/"
+    }
+}
+```
 
 Latest Version of Fiber: [Click Me](https://maven.fabricmc.net/me/zeroeightsix/fiber/maven-metadata.xml)
 
