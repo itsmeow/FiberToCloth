@@ -38,7 +38,6 @@ import me.shedaniel.fiber2cloth.api.Fiber2Cloth;
 import me.shedaniel.fiber2cloth.api.GuiEntryProvider;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 
 import java.util.List;
 import java.util.Map;
@@ -110,7 +109,7 @@ public class FakeFiber2Cloth implements Fiber2Cloth {
     
     @Override
     public Text getDefaultCategory() {
-        return new TranslatableText("config.fiber2cloth.default.category");
+        return Text.translatable("config.fiber2cloth.default.category");
     }
     
     @Override

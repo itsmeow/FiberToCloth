@@ -45,9 +45,8 @@ import me.shedaniel.clothconfig2.impl.builders.DropdownMenuBuilder;
 import me.shedaniel.fiber2cloth.api.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -64,7 +63,7 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
     
     private final String modId;
     private final Screen parentScreen;
-    private Text defaultCategory = new TranslatableText("config.fiber2cloth.default.category");
+    private Text defaultCategory = Text.translatable("config.fiber2cloth.default.category");
     private Text title;
     private final ConfigBranch root;
     private ConfigBranch defaultCategoryBranch;
@@ -89,13 +88,13 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
             S v = type.toSerializedType(value);
             return error(constraints, v);
         } catch (FiberConversionException e) {
-            return Optional.of(new TranslatableText("error.fiber2cloth.when.casting", e.getMessage()));
+            return Optional.of(Text.translatable("error.fiber2cloth.when.casting", e.getMessage()));
         }
     }
     
     private static <S> Optional<Text> error(SerializableType<S> constraints, S v) {
         if (!constraints.accepts(v)) {
-            return Optional.of(new TranslatableText("error.fiber2cloth.invalid.value", v, constraints));
+            return Optional.of(Text.translatable("error.fiber2cloth.invalid.value", v, constraints));
         }
         return Optional.empty();
     }
@@ -196,7 +195,7 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
                         .setErrorSupplier(v -> error(type, BigDecimal.valueOf(v).multiply(step).add(min)))
                         .setTextGetter(v -> {
                             BigDecimal val = BigDecimal.valueOf(v);
-                            return new TranslatableText("gui.fiber2cloth.slider.value", val.multiply(step).add(min).setScale(step.scale(), RoundingMode.FLOOR));
+                            return Text.translatable("gui.fiber2cloth.slider.value", val.multiply(step).add(min).setScale(step.scale(), RoundingMode.FLOOR));
                         })
                         .build()
                 );
@@ -232,7 +231,7 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
                         .setDefaultValue(scaledDefault)
                         .setSaveConsumer(v -> mirror.setValue(v * step + min))
                         .setErrorSupplier(v -> error(ConfigTypes.LONG, type, v * step + min))
-                        .setTextGetter(v -> new TranslatableText("gui.fiber2cloth.slider.value", v * step + min))
+                        .setTextGetter(v -> Text.translatable("gui.fiber2cloth.slider.value", v * step + min))
                         .build()
                 );
             } else {
@@ -266,8 +265,8 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
                     .setErrorSupplier(errorSupplier)
                     .setYesNoTextSupplier(bool -> {
                         if (I18n.hasTranslation(s + ".boolean." + bool))
-                            return new TranslatableText(s + ".boolean." + bool);
-                        return new LiteralText(bool ? "§aYes" : "§cNo");
+                            return Text.translatable(s + ".boolean." + bool);
+                        return Text.literal(bool ? "§aYes" : "§cNo");
                     }).build()
             );
         });
@@ -285,8 +284,8 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
                         .setErrorSupplier(v -> error(type, v))
                         .setNameProvider((name) -> {
                             if (I18n.hasTranslation(key + ".enum." + name.toLowerCase(Locale.ROOT)))
-                                return new TranslatableText(key + ".enum." + name.toLowerCase(Locale.ROOT));
-                            return new LiteralText(name);
+                                return Text.translatable(key + ".enum." + name.toLowerCase(Locale.ROOT));
+                            return Text.literal(name);
                         })
                         .build()
                 );
@@ -365,7 +364,7 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
     }
     
     private Text getFieldNameKey(String name) {
-        return new TranslatableText("config." + modId + "." + name);
+        return Text.translatable("config." + modId + "." + name);
     }
     
     @Override
@@ -554,12 +553,12 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
                         tooltip = rawTooltip
                                 .map(key -> key.isEmpty() ? entry.getFieldName().getString() + "@Tooltip" : key)
                                 .map(Fiber2ClothImpl::gatherLocalizedLines)
-                                .map(strings -> strings.stream().map(LiteralText::new).collect(Collectors.toList()))
+                                .map(strings -> strings.stream().map(Text::literal).collect(Collectors.toList()))
                                 .map(l -> l.toArray(new Text[0]));
                     } else {
                         String comment = value instanceof Commentable ? ((Commentable) value).getComment() : null;
                         tooltip = Optional.ofNullable(comment).map(s -> s.split("\n")).map(Arrays::asList)
-                                .map(strings -> strings.stream().map(LiteralText::new).collect(Collectors.toList()))
+                                .map(strings -> strings.stream().map(Text::literal).collect(Collectors.toList()))
                                 .map(l -> l.toArray(new Text[0]));
                     }
                     ((TooltipListEntry<?>) entry).setTooltipSupplier(() -> tooltip);
@@ -575,10 +574,10 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
     
     private void addPrefixText(List<AbstractConfigListEntry<?>> entries, ConfigNode value, Text baseTranslationKey) {
         value.getAttributeValue(ClothAttributes.PREFIX_TEXT, ConfigTypes.STRING)
-                .map(key -> key.isEmpty() ? (baseTranslationKey instanceof TranslatableText ? ((TranslatableText) baseTranslationKey).getKey() : baseTranslationKey.getString()) + "@PrefixText" : key)
+                .map(key -> key.isEmpty() ? (baseTranslationKey.getContent() instanceof TranslatableTextContent ? ((TranslatableTextContent) baseTranslationKey.getContent()).getKey() : baseTranslationKey.getString()) + "@PrefixText" : key)
                 .map(Fiber2ClothImpl::gatherLocalizedLines)
                 .map(l -> String.join("\n", l))
-                .map(LiteralText::new)
+                .map(Text::translatable)
                 .map(txt -> configEntryBuilder.startTextDescription(txt).build())
                 .ifPresent(entries::add);
     }

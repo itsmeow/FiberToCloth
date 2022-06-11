@@ -38,7 +38,6 @@ import me.shedaniel.fiber2cloth.impl.FakeFiber2Cloth;
 import me.shedaniel.fiber2cloth.impl.annotation.Fiber2ClothAnnotations;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -59,7 +58,7 @@ public interface Fiber2Cloth {
     }
     
     static Fiber2Cloth create(Screen parentScreen, String modId, ConfigBranch node, String title) {
-        return create(parentScreen, modId, node, new TranslatableText(title));
+        return create(parentScreen, modId, node, Text.translatable(title));
     }
     
     static Fiber2Cloth create(Screen parentScreen, String modId, ConfigBranch node, Text title) {
@@ -110,7 +109,7 @@ public interface Fiber2Cloth {
     Text getDefaultCategory();
     
     default Fiber2Cloth setDefaultCategoryKey(String key) {
-        return setDefaultCategory(new TranslatableText(key));
+        return setDefaultCategory(Text.translatable(key));
     }
     
     Fiber2Cloth setDefaultCategory(Text key);
@@ -124,7 +123,7 @@ public interface Fiber2Cloth {
     
     @Deprecated
     default Fiber2Cloth setTitle(String title) {
-        return setTitleText(new TranslatableText(title));
+        return setTitleText(Text.translatable(title));
     }
     
     Fiber2Cloth setTitleText(Text title);

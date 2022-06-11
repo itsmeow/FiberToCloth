@@ -1,21 +1,11 @@
 plugins {
-    id 'fabric-loom' version '0.7-SNAPSHOT'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
-    id 'org.cadixdev.licenser' version '0.6.0'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
-
-license {
-    header rootProject.file('LICENSE')
-    include '**/*.java'
-}
 
 repositories {
     maven {
@@ -31,27 +21,26 @@ repositories {
             includeGroup 'com.terraformersmc'
         }
     }
-}
-
-minecraft {
+    maven {
+        url = "https://cursemaven.com/"
+        content {
+            includeGroup 'curse.maven'
+        }
+    }
 }
 
 dependencies {
-    //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modApi "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Fabric API. This is technically optional, but you probably want it anyway.
     modApi "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modApi ("me.shedaniel.cloth:cloth-config-fabric:${cloth_version}") {
+    modApi("curse.maven:cloth-config-348521:${rootProject.cloth_version}") {
+        exclude(group: "net.fabricmc")
         exclude(group: "net.fabricmc.fabric-api")
     }
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
     modApi "me.zeroeightsix:fiber:${project.fiber_version}"
-
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
 }
 
 processResources {
@@ -62,48 +51,15 @@ processResources {
     }
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
+    options.release = 17
 }
 
 jar {
     from "LICENSE"
 }
 
-curseforge {
-    apiKey = project.hasProperty('apiKey') ? project.property('apiKey') : System.getenv('CF_API_KEY')
-    if (apiKey != null)
-        project {
-            id = '340676'
-            releaseType = 'release'
-            addGameVersion '1.16-Snapshot'
-            addGameVersion 'Fabric'
-            addGameVersion 'Java 8'
-            relations {
-                requiredDependency 'fabric-api'
-                requiredDependency 'cloth-config'
-            }
-            mainArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}.jar")) {
-                displayName = "[Fabric ${project.supported_version}] v$project.version"
-            }
-            addArtifact(file("${project.buildDir}/libs/${project.archivesBaseName}-${project.version}-sources.jar"))
-            afterEvaluate {
-                uploadTask.dependsOn("remapJar")
-                uploadTask.dependsOn("remapSourcesJar")
-            }
-        }
-    options {
-        forgeGradleIntegration = false
-        javaVersionAutoDetect = false
-    }
-}
-
-// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-// if it is present.
-// If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
@@ -147,23 +103,29 @@ publishing {
                 shedaniel.appendNode('id', 'shedaniel')
                 shedaniel.appendNode('name', 'shedaniel')
                 shedaniel.appendNode('email', 'daniel@shedaniel.me')
+                def itsmeow = developers.appendNode('developer')
+                itsmeow.appendNode('id', 'itsmeow')
+                itsmeow.appendNode('name', 'itsmeowdev')
+                itsmeow.appendNode('email', 'itsmeow@itsmeow.dev')
                 def scm = root.appendNode('scm')
-                scm.appendNode('url', "https://github.com/shedaniel/FiberToCloth")
-                scm.appendNode('connection', "scm:git:git://github.com/shedaniel/FiberToCloth.git")
-                scm.appendNode('developerConnection', "scm:git:ssh://github.com:shedaniel/FiberToCloth.git")
+                scm.appendNode('url', "https://github.com/itsmeow/FiberToCloth")
+                scm.appendNode('connection', "scm:git:git://github.com/itsmeow/FiberToCloth.git")
+                scm.appendNode('developerConnection', "scm:git:ssh://github.com:itsmeow/FiberToCloth.git")
             }
         }
     }
-
-    // select the repositories you want to publish to
     repositories {
-        if (System.getenv("MAVEN_PASS") != null) {
-            maven {
-                url = "https://deploy.shedaniel.me/"
+        maven {
+            if ((System.getenv("MAVEN_USER") != '') && (System.getenv("MAVEN_PASSWORD") != '')) {
                 credentials {
-                    username = "shedaniel"
-                    password = System.getenv("MAVEN_PASS")
+                    username System.getenv("MAVEN_USER")
+                    password System.getenv("MAVEN_PASSWORD")
                 }
+            }
+            if (System.getenv("MAVEN_URL") != '') {
+                url System.getenv("MAVEN_URL")
+            } else {
+                url "file:///${project.buildDir}/repo"
             }
         }
     }
