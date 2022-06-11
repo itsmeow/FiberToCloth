@@ -29,12 +29,12 @@ package me.shedaniel.fiber2cloth.api;
 
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.ConfigTypes;
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.derived.StringConfigType;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public final class DefaultTypes {
-    public static final StringConfigType<Identifier> IDENTIFIER_TYPE = ConfigTypes.STRING
+    public static final StringConfigType<ResourceLocation> IDENTIFIER_TYPE = ConfigTypes.STRING
             .withPattern("(?>[a-z0-9_.-]+:)?[a-z0-9/._-]+")
-            .derive(Identifier.class, Identifier::new, Identifier::toString);
+            .derive(ResourceLocation.class, ResourceLocation::new, ResourceLocation::toString);
     
     private DefaultTypes() {
     }

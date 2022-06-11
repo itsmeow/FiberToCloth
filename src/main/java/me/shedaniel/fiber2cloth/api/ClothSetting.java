@@ -28,13 +28,12 @@
 package me.shedaniel.fiber2cloth.api;
 
 import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.EnumSerializableType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 
 public @interface ClothSetting {
     
@@ -179,10 +178,10 @@ public @interface ClothSetting {
          * If set to a valid {@link Registry} identifier, the generated text input will use the values
          * in that registry for suggestions.
          *
-         * <p>The returned string should represent a valid {@link Identifier} that exists as
-         * a key in {@link Registry#REGISTRIES}.
+         * <p>The returned string should represent a valid {@link ResourceLocation} that exists as
+         * a key in {@link Registry#REGISTRY}.
          *
-         * @return a string denoting a valid {@link Identifier} for a {@link Registry}
+         * @return a string denoting a valid {@link ResourceLocation} for a {@link Registry}
          */
         String value();
     }

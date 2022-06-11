@@ -31,8 +31,7 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.schema.type.SerializableType;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigLeaf;
 import io.github.fablabsmc.fablabs.api.fiber.v1.tree.PropertyMirror;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
-import net.minecraft.text.Text;
-
+import net.minecraft.network.chat.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -50,5 +49,5 @@ public interface GuiEntryProvider<R, S, T extends SerializableType<S>> {
      * @return entries allowing users to edit the property, or {@code null} to delegate to a more general provider
      */
     /*@Nullable*/
-    List<AbstractConfigListEntry<?>> apply(ConfigLeaf<S> leaf, T type, PropertyMirror<R> mirror, R defaultValue, Function<R, Optional<Text>> suggestedErrorSupplier);
+    List<AbstractConfigListEntry<?>> apply(ConfigLeaf<S> leaf, T type, PropertyMirror<R> mirror, R defaultValue, Function<R, Optional<Component>> suggestedErrorSupplier);
 }

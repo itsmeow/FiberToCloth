@@ -30,12 +30,12 @@ package me.shedaniel.fiber2cloth.impl.annotation;
 import io.github.fablabsmc.fablabs.api.fiber.v1.annotation.AnnotatedSettings;
 import me.shedaniel.fiber2cloth.api.ClothAttributes;
 import me.shedaniel.fiber2cloth.api.ClothSetting;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public final class Fiber2ClothAnnotations {
     public static void configure(AnnotatedSettings.Builder in) {
         in.registerGroupProcessor(ClothSetting.CategoryBackground.class,
-                (annotation, field, pojo, builder) -> builder.withAttribute(ClothAttributes.categoryBackground(new Identifier(annotation.value()))));
+                (annotation, field, pojo, builder) -> builder.withAttribute(ClothAttributes.categoryBackground(new ResourceLocation(annotation.value()))));
         in.registerGroupProcessor(ClothSetting.Excluded.class,
                 (annotation, field, pojo, builder) -> builder.withAttribute(ClothAttributes.excluded()));
         in.registerSettingProcessor(ClothSetting.Excluded.class,
@@ -55,7 +55,7 @@ public final class Fiber2ClothAnnotations {
         in.registerSettingProcessor(ClothSetting.EnumHandler.class,
                 (annotation, field, pojo, builder) -> builder.withAttribute(ClothAttributes.enumDisplay(annotation.value())));
         in.registerSettingProcessor(ClothSetting.RegistryInput.class,
-                (annotation, field, pojo, builder) -> builder.withAttribute(ClothAttributes.registryInput(new Identifier(annotation.value()))));
+                (annotation, field, pojo, builder) -> builder.withAttribute(ClothAttributes.registryInput(new ResourceLocation(annotation.value()))));
         in.registerSettingProcessor(ClothSetting.Slider.class,
                 (annotation, field, pojo, builder) -> builder.withAttribute(ClothAttributes.slider()));
         in.registerSettingProcessor(ClothSetting.RequiresRestart.class,

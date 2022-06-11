@@ -36,9 +36,8 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigNode;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.fiber2cloth.impl.FakeFiber2Cloth;
 import me.shedaniel.fiber2cloth.impl.annotation.Fiber2ClothAnnotations;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
-
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
@@ -58,12 +57,12 @@ public interface Fiber2Cloth {
     }
     
     static Fiber2Cloth create(Screen parentScreen, String modId, ConfigBranch node, String title) {
-        return create(parentScreen, modId, node, Text.translatable(title));
+        return create(parentScreen, modId, node, Component.translatable(title));
     }
     
-    static Fiber2Cloth create(Screen parentScreen, String modId, ConfigBranch node, Text title) {
+    static Fiber2Cloth create(Screen parentScreen, String modId, ConfigBranch node, Component title) {
         try {
-            return (Fiber2Cloth) Class.forName("me.shedaniel.fiber2cloth.impl.Fiber2ClothImpl").getConstructor(Screen.class, String.class, ConfigBranch.class, Text.class).newInstance(parentScreen, modId, node, Objects.requireNonNull(title));
+            return (Fiber2Cloth) Class.forName("me.shedaniel.fiber2cloth.impl.Fiber2ClothImpl").getConstructor(Screen.class, String.class, ConfigBranch.class, Component.class).newInstance(parentScreen, modId, node, Objects.requireNonNull(title));
         } catch (InstantiationException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return new FakeFiber2Cloth(parentScreen, node, Objects.requireNonNull(title));
@@ -106,27 +105,27 @@ public interface Fiber2Cloth {
         return getDefaultCategory().getString();
     }
     
-    Text getDefaultCategory();
+    Component getDefaultCategory();
     
     default Fiber2Cloth setDefaultCategoryKey(String key) {
-        return setDefaultCategory(Text.translatable(key));
+        return setDefaultCategory(Component.translatable(key));
     }
     
-    Fiber2Cloth setDefaultCategory(Text key);
+    Fiber2Cloth setDefaultCategory(Component key);
     
     @Deprecated
     default String getTitle() {
         return getTitleText().getString();
     }
     
-    Text getTitleText();
+    Component getTitleText();
     
     @Deprecated
     default Fiber2Cloth setTitle(String title) {
-        return setTitleText(Text.translatable(title));
+        return setTitleText(Component.translatable(title));
     }
     
-    Fiber2Cloth setTitleText(Text title);
+    Fiber2Cloth setTitleText(Component title);
     
     Result build();
     

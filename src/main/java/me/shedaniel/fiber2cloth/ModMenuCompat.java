@@ -39,11 +39,10 @@ import me.shedaniel.fiber2cloth.api.ClothAttributes;
 import me.shedaniel.fiber2cloth.api.ClothSetting;
 import me.shedaniel.fiber2cloth.api.DefaultTypes;
 import me.shedaniel.fiber2cloth.api.Fiber2Cloth;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Difficulty;
-
+import net.minecraft.world.level.block.Blocks;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -52,14 +51,14 @@ public class ModMenuCompat implements ModMenuApi {
         return screen -> {
             ConfigBranch cfg = ConfigTree.builder()
                     .withAttribute(ClothAttributes.transparentBackground())
-                    .withAttribute(ClothAttributes.defaultBackground(new Identifier("minecraft:textures/block/oak_planks.png")))
+                    .withAttribute(ClothAttributes.defaultBackground(new ResourceLocation("minecraft:textures/block/oak_planks.png")))
                     .applyFromPojo(new Pojo(),
                             AnnotatedSettings.builder()
-                                    .registerTypeMapping(Identifier.class, DefaultTypes.IDENTIFIER_TYPE)
+                                    .registerTypeMapping(ResourceLocation.class, DefaultTypes.IDENTIFIER_TYPE)
                                     .apply(Fiber2Cloth::configure)
                                     .build())
                     .fork("second.category")
-                    .withAttribute(ClothAttributes.categoryBackground(new Identifier("minecraft:textures/block/stone.png")))
+                    .withAttribute(ClothAttributes.categoryBackground(new ResourceLocation("minecraft:textures/block/stone.png")))
                     .withValue("nestedExample", ConfigTypes.STRING, "Hi")
                     .fork("i.am.inside")
                     .fork("i.am.inside.but.hidden")
@@ -116,14 +115,14 @@ public class ModMenuCompat implements ModMenuApi {
         public SecondCategory secondPojoCategory = new SecondCategory();
         
         private static class FirstCategory {
-            public Identifier[] ids = new Identifier[]{
-                    new Identifier("minecraft:diamond"),
-                    new Identifier("fabric:bike_shed")
+            public ResourceLocation[] ids = new ResourceLocation[]{
+                    new ResourceLocation("minecraft:diamond"),
+                    new ResourceLocation("fabric:bike_shed")
             };
             
             @Comment("Your favourite block in the game")
             @ClothSetting.RegistryInput("block")
-            public Identifier favouriteBlock = Registry.BLOCK.getId(Blocks.COARSE_DIRT);
+            public ResourceLocation favouriteBlock = Registry.BLOCK.getKey(Blocks.COARSE_DIRT);
             
             @ClothSetting.ColorPicker(alpha = false)
             public int favouriteColor = 0xFF0000;

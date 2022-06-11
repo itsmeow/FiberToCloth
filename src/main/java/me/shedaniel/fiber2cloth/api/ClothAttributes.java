@@ -33,9 +33,9 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigAttribute;
 import me.shedaniel.fiber2cloth.impl.ColorPickerFormat;
 import me.shedaniel.fiber2cloth.impl.Fiber2ClothImpl;
 import me.shedaniel.fiber2cloth.impl.GroupDisplayOption;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.MutableRegistry;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.WritableRegistry;
+import net.minecraft.resources.ResourceLocation;
 
 public final class ClothAttributes {
     
@@ -54,7 +54,7 @@ public final class ClothAttributes {
      * @param backgroundLocation the location of the texture to use for the background
      * @see #TRANSPARENT_BACKGROUND
      */
-    public static ConfigAttribute<String> defaultBackground(Identifier backgroundLocation) {
+    public static ConfigAttribute<String> defaultBackground(ResourceLocation backgroundLocation) {
         return ConfigAttribute.create(DEFAULT_BACKGROUND, DefaultTypes.IDENTIFIER_TYPE, backgroundLocation);
     }
     
@@ -67,7 +67,7 @@ public final class ClothAttributes {
         return ConfigAttribute.create(TRANSPARENT_BACKGROUND, ConfigTypes.BOOLEAN, true);
     }
     
-    public static ConfigAttribute<String> categoryBackground(Identifier backgroundLocation) {
+    public static ConfigAttribute<String> categoryBackground(ResourceLocation backgroundLocation) {
         return ConfigAttribute.create(CATEGORY_BACKGROUND, DefaultTypes.IDENTIFIER_TYPE, backgroundLocation);
     }
     
@@ -108,14 +108,14 @@ public final class ClothAttributes {
     public static final FiberId REGISTRY_INPUT = id("registry_object");
     public static final FiberId REQUIRES_RESTART = id("requires_restart");
     
-    public static ConfigAttribute<String> registryInput(MutableRegistry<?> registry) {
+    public static ConfigAttribute<String> registryInput(WritableRegistry<?> registry) {
         @SuppressWarnings("rawtypes")
-        Identifier registryId = ((Registry) Registry.REGISTRIES).getId(registry);
+        ResourceLocation registryId = ((Registry) Registry.REGISTRY).getKey(registry);
         if (registryId == null) throw new IllegalArgumentException("Unregistered registry " + registry);
         return registryInput(registryId);
     }
     
-    public static ConfigAttribute<String> registryInput(Identifier registryId) {
+    public static ConfigAttribute<String> registryInput(ResourceLocation registryId) {
         return ConfigAttribute.create(REGISTRY_INPUT, DefaultTypes.IDENTIFIER_TYPE, registryId);
     }
     

@@ -36,9 +36,8 @@ import io.github.fablabsmc.fablabs.api.fiber.v1.tree.ConfigNode;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.fiber2cloth.api.Fiber2Cloth;
 import me.shedaniel.fiber2cloth.api.GuiEntryProvider;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
-
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -47,11 +46,11 @@ import java.util.function.Function;
 public class FakeFiber2Cloth implements Fiber2Cloth {
     
     private final Screen parentScreen;
-    private final Text title;
+    private final Component title;
     private final ConfigBranch node;
     
     @Deprecated
-    public FakeFiber2Cloth(Screen parentScreen, ConfigBranch node, Text title) {
+    public FakeFiber2Cloth(Screen parentScreen, ConfigBranch node, Component title) {
         this.parentScreen = parentScreen;
         this.node = node;
         this.title = title;
@@ -108,22 +107,22 @@ public class FakeFiber2Cloth implements Fiber2Cloth {
     }
     
     @Override
-    public Text getDefaultCategory() {
-        return Text.translatable("config.fiber2cloth.default.category");
+    public Component getDefaultCategory() {
+        return Component.translatable("config.fiber2cloth.default.category");
     }
     
     @Override
-    public Fiber2Cloth setDefaultCategory(Text key) {
+    public Fiber2Cloth setDefaultCategory(Component key) {
         return this;
     }
     
     @Override
-    public Text getTitleText() {
+    public Component getTitleText() {
         return title;
     }
     
     @Override
-    public Fiber2Cloth setTitleText(Text title) {
+    public Fiber2Cloth setTitleText(Component title) {
         return null;
     }
     
