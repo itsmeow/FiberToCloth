@@ -85,7 +85,7 @@ publishing {
                 builtBy remapSourcesJar
             }
             artifact javadocsJar
-            groupId 'me.shedaniel.cloth'
+            groupId 'dev.itsmeow.cloth'
             artifactId 'fiber2cloth'
             version = project.version
             pom.withXml {
