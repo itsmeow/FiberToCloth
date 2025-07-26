@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '1.5-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -41,6 +41,7 @@ dependencies {
     }
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
     modApi "me.zeroeightsix:fiber:${project.fiber_version}"
+    modApi("me.shedaniel.cloth:basic-math:0.6.1")
 }
 
 processResources {
@@ -53,7 +54,7 @@ processResources {
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
-    options.release = 17
+    options.release = 21
 }
 
 jar {
@@ -61,7 +62,7 @@ jar {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
@@ -70,7 +71,7 @@ task javadocs(type: Javadoc) {
 }
 
 task javadocsJar(type: Jar, dependsOn: javadocs) {
-    classifier = "javadocs"
+    archiveClassifier = "javadocs"
     javadocs.failOnError false
     from javadocs.destinationDir
 }

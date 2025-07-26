@@ -45,10 +45,11 @@ import me.shedaniel.clothconfig2.impl.builders.DropdownMenuBuilder;
 import me.shedaniel.fiber2cloth.api.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -307,12 +308,12 @@ public class Fiber2ClothImpl implements Fiber2Cloth {
                         .setErrorSupplier(errorSupplier).build()
                 ));
         registerLeafEntryFunction(DefaultTypes.IDENTIFIER_TYPE, (leaf, type, mirror, defaultValue, suggestedErrorSupplier) ->
-                leaf.getAttributeValue(ClothAttributes.REGISTRY_INPUT, DefaultTypes.IDENTIFIER_TYPE).map(Registry.REGISTRY::get).map(registry -> {
+                leaf.getAttributeValue(ClothAttributes.REGISTRY_INPUT, DefaultTypes.IDENTIFIER_TYPE).map(BuiltInRegistries.REGISTRY::get).map(registry -> {
                     DropdownBoxEntry.SelectionTopCellElement<ResourceLocation> topCellElement;
-                    if (registry == Registry.BLOCK) {
-                        topCellElement = DropdownMenuBuilder.TopCellElementBuilder.ofBlockIdentifier(Registry.BLOCK.get(mirror.getValue()));
-                    } else if (registry == Registry.ITEM) {
-                        topCellElement = DropdownMenuBuilder.TopCellElementBuilder.ofItemIdentifier(Registry.ITEM.get(mirror.getValue()));
+                    if (registry == BuiltInRegistries.BLOCK) {
+                        topCellElement = DropdownMenuBuilder.TopCellElementBuilder.ofBlockIdentifier(BuiltInRegistries.BLOCK.get(mirror.getValue()));
+                    } else if (registry == BuiltInRegistries.ITEM) {
+                        topCellElement = DropdownMenuBuilder.TopCellElementBuilder.ofItemIdentifier(BuiltInRegistries.ITEM.get(mirror.getValue()));
                     } else {
                         //noinspection Convert2MethodRef
                         topCellElement = DropdownMenuBuilder.TopCellElementBuilder.of(mirror.getValue(), s -> Optional.ofNullable(ResourceLocation.tryParse(s)).filter(identifier -> registry.containsKey(identifier)).orElse(null));

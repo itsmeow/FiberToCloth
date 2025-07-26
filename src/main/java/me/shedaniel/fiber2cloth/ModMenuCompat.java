@@ -39,10 +39,11 @@ import me.shedaniel.fiber2cloth.api.ClothAttributes;
 import me.shedaniel.fiber2cloth.api.ClothSetting;
 import me.shedaniel.fiber2cloth.api.DefaultTypes;
 import me.shedaniel.fiber2cloth.api.Fiber2Cloth;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.block.Blocks;
+
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -122,7 +123,7 @@ public class ModMenuCompat implements ModMenuApi {
             
             @Comment("Your favourite block in the game")
             @ClothSetting.RegistryInput("block")
-            public ResourceLocation favouriteBlock = Registry.BLOCK.getKey(Blocks.COARSE_DIRT);
+            public ResourceLocation favouriteBlock = BuiltInRegistries.BLOCK.getKey(Blocks.COARSE_DIRT);
             
             @ClothSetting.ColorPicker(alpha = false)
             public int favouriteColor = 0xFF0000;

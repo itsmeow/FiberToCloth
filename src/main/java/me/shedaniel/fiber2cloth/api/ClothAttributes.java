@@ -35,6 +35,7 @@ import me.shedaniel.fiber2cloth.impl.Fiber2ClothImpl;
 import me.shedaniel.fiber2cloth.impl.GroupDisplayOption;
 import net.minecraft.core.Registry;
 import net.minecraft.core.WritableRegistry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 
 public final class ClothAttributes {
@@ -110,7 +111,7 @@ public final class ClothAttributes {
     
     public static ConfigAttribute<String> registryInput(WritableRegistry<?> registry) {
         @SuppressWarnings("rawtypes")
-        ResourceLocation registryId = ((Registry) Registry.REGISTRY).getKey(registry);
+        ResourceLocation registryId = ((Registry) BuiltInRegistries.REGISTRY).getKey(registry);
         if (registryId == null) throw new IllegalArgumentException("Unregistered registry " + registry);
         return registryInput(registryId);
     }
